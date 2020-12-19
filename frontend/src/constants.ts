@@ -10,9 +10,9 @@ export interface CalcSpectrumParams
   simulate_slit: boolean;
 }
 
-export interface CalcSpectrumResponseData {
-  x: number[];
-  y: number[];
+export interface SpectraPoint {
+  x: number;
+  y: number;
 }
 
 export const palette = {

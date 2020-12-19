@@ -9,7 +9,7 @@ import {
 import { Alert } from "@material-ui/lab";
 import * as queryString from "query-string";
 import WavenumberRangeSlider from "./WavenumberRangeSlider";
-import { CalcSpectrumParams, CalcSpectrumResponseData } from "../constants";
+import { CalcSpectrumParams, SpectraPoint } from "../constants";
 import MoleculeSelector from "./MoleculeSelector";
 import SimulateSlit from "./SimulateSlit";
 import CalcSpectrumPlot from "./CalcSpectrumPlot";
@@ -28,10 +28,9 @@ interface ValidationErrors {
 }
 
 const CalcSpectrum: React.FC = () => {
-  const [
-    calcSpectrumResponse,
-    setCalcSpectrumResponse,
-  ] = useState<Response<CalcSpectrumResponseData> | null>(null);
+  const [calcSpectrumResponse, setCalcSpectrumResponse] = useState<Response<
+    SpectraPoint[]
+  > | null>(null);
   const [params, setParams] = useState<CalcSpectrumParams>({
     molecule: "CO",
     min_wavenumber_range: 1900,
@@ -275,6 +274,8 @@ const CalcSpectrum: React.FC = () => {
             <CalcSpectrumPlot
               data={calcSpectrumResponse.data}
               molecule={params.molecule}
+              minWavenumberRange={params.min_wavenumber_range}
+              maxWavenumberRange={params.max_wavenumber_range}
             />
           )
         )}

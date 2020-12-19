@@ -27,14 +27,14 @@ class QueryModel(BaseModel):
     simulate_slit: bool
 
 
-class CalcSpectrumResult(BaseModel):
-    x: List[float]
-    y: List[float]
+class SpectraPoint(BaseModel):
+    x: float
+    y: float
 
 
 class ResponseModel(BaseModel):
     error: Optional[str]
-    data: Optional[CalcSpectrumResult]
+    data: Optional[List[SpectraPoint]]
 
 
 @app.route("/calc-spectrum")
@@ -67,8 +67,8 @@ def plot_spectrum(spectrum) -> ResponseModel:
     wunit = spectrum.get_waveunit()
     var = "radiance_noslit"
     iunit = "default"
-    x, y = spectrum.get(var, wunit=wunit, Iunit=iunit)
-    return ResponseModel(data=CalcSpectrumResult(x=list(x), y=list(y)))
+    xs, ys = spectrum.get(var, wunit=wunit, Iunit=iunit)
+    return ResponseModel(data=[SpectraPoint(x=x, y=y) for x, y in zip(xs, ys)])
 
 
 @app.route("/molecules")
